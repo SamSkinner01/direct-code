@@ -26,7 +26,6 @@ const signInWithGoogle = async () => {
             await addDoc(collection(db, 'users'), {
                 uid: user.uid,
                 email: user.email,
-                displayName: user.displayName,
                 authProvider: 'google'
             });
         }
@@ -61,7 +60,6 @@ const registerWithEmailAndPassword = async (email, password) => {
         // Add user to database
         await addDoc(collection(db, 'users'), {
             uid: user.uid,
-            name: user.name,
             authProvider: 'local',
             email,
         });

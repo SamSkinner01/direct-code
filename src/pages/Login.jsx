@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginWithEmailAndPassword, signInWithGoogle } from "../userAuth.js";
-import {auth} from "../Firebase.js";
+import { auth } from "../Firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
-import "./login.css";
+import "../css/login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+
+
   useEffect(() => {
     if (loading) {
       // maybe trigger a loading screen
@@ -17,6 +19,8 @@ function Login() {
     }
     if (user) navigate("/dashboard");
   }, [user, loading]);
+
+
   return (
     <div className="login">
       <div className="login__container">
@@ -53,4 +57,6 @@ function Login() {
     </div>
   );
 }
+
+
 export default Login;
