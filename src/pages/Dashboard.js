@@ -10,17 +10,38 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import {
   getFirestore, query, getDocs, collection, where, addDoc, map} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function Dashboard() {
+  //const currentUser = getAuth(auth);
+
   const [user, loading, error] = useAuthState(auth);
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  const [boardsToShow, setBoardsToShow] = useState([]);
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const fetchBoards = async () => { 
+
+    console.log("Fetching boards");
+    
+    try{
+      const userID = user?.uid || "";
+      const boardsRef = collection(db, 'boards');
+      const q = query(boardsRef, where('uid', '==', userID));
+      const docs = await getDocs(q);
+      const boards = docs.docs.map(item => item.data());
+      setBoardsToShow(boards);
+    }
+    catch(err){
+      console.log(err);
+    }
+
+  }
 
   function addBoardToDB() {
     handleClose();
@@ -30,35 +51,20 @@ function Dashboard() {
       boardDescription: description,
       uid: user.uid
     });  
+
+    fetchBoards();
   }
 
-  const displayUserBoards = async() => {
-    // Queries database for user boards and uses try catch
-    // to catch any errors
-    // try{
-    //   const q = query(collection(db, 'boards'), where('uid', '==', user.uid));
-    //   const docs = await getDocs(q);
-    //   const boards = docs.docs.map(doc => doc.data());
-    //   // Create a board for each board in the database
-    //   return boards.map(board => {
-    //     return <Board title={board.boardTitle} description={board.boardDescription} />
-    //   }
-    //   );
-    // }
-    // catch(err){
-    //   console.log(err);
-    //   return null;
-    // } 
 
-    //return null;
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (!user) return navigate("/");
+  // }, [user, loading]);
 
-  }
-
-  useEffect(() => {
-    if (loading) return;
-    if (!user) return navigate("/");
-  }, [user, loading]);
-
+  // useEffect(() => {
+  //   fetchBoards();
+  // }, [boardsToShow]);
+  fetchBoards();
   return (
     <>
 
@@ -69,6 +75,11 @@ function Dashboard() {
     <div>Logged in as {user?.email}</div>       
     
     
+    <div className="boards">
+      {boardsToShow && boardsToShow.map((board,index) => (
+        <Board key={index} title={board.boardTitle} description={board.boardDescription} />
+      ))}
+    </div>
 
     <Button variant="primary" onClick={handleShow}>
         +
