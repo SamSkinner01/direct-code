@@ -36,7 +36,7 @@ function Dashboard() {
       const q = query(boardsRef, where('uid', '==', userID));
       const docs = await getDocs(q);
       const boards = docs.docs.map(item => item.data());
-      if(boards.length != boardsToShow.length){
+      if(boards.length !== boardsToShow.length){
         setBoardsToShow(boards);
       }
     }
@@ -61,13 +61,13 @@ function Dashboard() {
 
   async function deleteFromDB(bid) {
     try{
-      console.log(bid);
-      // await deleteDoc(doc(db, "boards"), {
-      //   boardID: bid
-      // });
-
-      
-      //await deleteDoc(doc(db, "boards", bid));
+      getDocs(collection(db, "boards")).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          if(doc.data().boardID === bid){
+            deleteDoc(doc.ref);
+          }
+        });
+      });
       fetchBoards();
     }
     catch(err){
