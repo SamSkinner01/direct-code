@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from "react-router-dom";
 
 
 function Board(props) {
@@ -20,6 +21,9 @@ function Board(props) {
       </Card.Body>
     
       <Button variant="danger" onClick={deleteFN}>Delete</Button>
+      <Link to={"../board/" + props.boardID} relative="path">
+      Go to board
+    </Link>
     </Card>
   );
 }
