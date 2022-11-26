@@ -34,16 +34,15 @@ function Note(props) {
       }
 
     const addItem = text => {
-        
-        const newItems = [...items, { text }];
+        const itemID = uuidv4();
+        const newItems = [...items, { text }, {isCompleted: false}, {itemID: itemID}];
         setItems(newItems);
-        console.table(items)
 
         addDoc(collection(db, "items"), {
             itemTitle: text,
             isCompleted: false,
             noteID: props.noteID,
-            itemID: uuidv4(),
+            itemID: itemID
           });
       };
 
@@ -56,8 +55,6 @@ function Note(props) {
         try{
             getDocs(collection(db, "items")).then((querySnapshot) => {
               querySnapshot.forEach((doc) => {
-                console.table(doc.data());
-                console.log(itemID)
                 if(doc.data().itemID === itemID){
                     
                   updateDoc(doc.ref, {
@@ -117,7 +114,6 @@ function Note(props) {
                 <Card.Title>{props.title}</Card.Title>
                 <div >
                     <div >
-
                         {items.map((item, index) => (
                             <Item
                                 key={index}
