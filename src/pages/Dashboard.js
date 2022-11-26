@@ -71,6 +71,30 @@ function Dashboard() {
     }
   }
 
+  function displayBoards(){
+    if(boardsToShow.length === 0){
+      return(
+        <div className="no-boards">
+          <h1>No Boards</h1>
+        </div>
+      )
+    }
+    else{
+      return boardsToShow.map((board) => {
+        return(
+          <Board 
+            key={board.boardID}
+            title={board.boardTitle}
+            description={board.boardDescription}
+            id={board.boardID}
+            deleteBoard={deleteFromDB}
+          />
+        )
+      })
+    }
+}
+  
+
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
@@ -87,13 +111,16 @@ function Dashboard() {
     </button>
     <div>Logged in as {user?.email}</div>       
     
+   
+    {boardsToShow.length === 0 ? <div className="no-boards"><h2>You haven't made a board yet. Go make one!</h2></div> :
+     <div className="boards">
+     {boardsToShow && boardsToShow.map((board,index) => (
+       <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
+     ))}
+   </div>
+    }
     
-    <div className="boards">
-      {boardsToShow && boardsToShow.map((board,index) => (
-        <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
-        
-      ))}
-    </div>
+   
 
     <Button variant="primary" onClick={handleShow}>
         +
@@ -107,12 +134,14 @@ function Dashboard() {
             <Form.Group className="mb-3" controlId="title">
               <Form.Label>Title</Form.Label>
               <Form.Control
+                required
                 type="text"
                 placeholder="Board Title"
                 autoFocus
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              <Form.Control.Feedback>Please enter a title.</Form.Control.Feedback>
             </Form.Group>
             <Form.Group
               className="mb-3"
