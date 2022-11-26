@@ -108,13 +108,14 @@ function addNoteToDB() {
     <div>Logged in as {user?.email}</div>       
 
 
-
+    {notesToShow.length === 0 ? <div className="no-notes"><h2>You currently have not created a note. Go make one!</h2></div> :
     <div className="notes">
       {notesToShow && notesToShow.map((note,index) => (
         <Note key={index} title={note.noteTitle} noteID={note.noteID} deleteFromDB={deleteFromDB}/>
         
       ))}
     </div>
+  }
 
     <Button variant="primary" onClick={handleShow}>
         +
