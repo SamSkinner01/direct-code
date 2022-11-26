@@ -1,6 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from "react-router-dom";
+
 import Modal  from 'react-bootstrap/Modal';
 import {useState} from 'react';
 
@@ -35,6 +37,10 @@ function Board(props) {
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
     
+      <Button variant="danger" onClick={deleteFN}>Delete</Button>
+      <Link to={"../board/" + props.boardID} relative="path">
+      Go to board
+    </Link>
       <Button variant="danger" onClick={onShow}>Delete</Button>
 
       <Modal 
