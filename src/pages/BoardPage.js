@@ -107,7 +107,9 @@ function addNoteToDB() {
           Logout
     </button>
     <div>Logged in as {user?.email}</div>       
-    
+
+      
+
     <div className="notes">
       {notesToShow && notesToShow.map((note,index) => (
         <Note key={index} title={note.noteTitle} noteID={note.noteID} deleteFromDB={deleteFromDB}/>

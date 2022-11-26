@@ -5,10 +5,18 @@ import { Link } from "react-router-dom";
 
 import Modal  from 'react-bootstrap/Modal';
 import {useState} from 'react';
+import Item from './Item';
+import '../css/todo.css';
 
 function Note(props){
+
     const [modalShow, setModalShow] = useState(false);
-    
+    const [items, setItems] = useState([
+        { text: "Learn about React" },
+      { text: "Meet friend for lunch" },
+      { text: "Build really cool todo app" }
+    ]);
+
     function deleteFN(){
         props.deleteFromDB(props.noteID);
     }
@@ -31,13 +39,21 @@ function Note(props){
     <Card style={{ width: '18rem' }}>
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
-        <Card.Text>
-            {props.description}
-        </Card.Text>
+        <div >
+      <div >
+        {items.map((item, index) => (
+          <Item
+            key={index}
+            item={item}
+          />
+        ))}
+      </div>
+    </div>
       </Card.Body>
     
-    
-      <Button variant="danger" onClick={onShow}>Delete</Button>
+
+
+      <Button variant="danger" onClick={onShow}>Delete Note</Button>
 
       <Modal 
       show={modalShow} 
