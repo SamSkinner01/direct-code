@@ -70,29 +70,6 @@ function Dashboard() {
       console.log(err);
     }
   }
-
-  function displayBoards(){
-    if(boardsToShow.length === 0){
-      return(
-        <div className="no-boards">
-          <h1>No Boards</h1>
-        </div>
-      )
-    }
-    else{
-      return boardsToShow.map((board) => {
-        return(
-          <Board 
-            key={board.boardID}
-            title={board.boardTitle}
-            description={board.boardDescription}
-            id={board.boardID}
-            deleteBoard={deleteFromDB}
-          />
-        )
-      })
-    }
-}
   
 
   useEffect(() => {
