@@ -1,8 +1,13 @@
-function Item(props){
+function Item(props, index, completeItem){
 
     return(
-        <div>
+        <div
+            style={{ textDecoration: props.item.isCompleted ? "line-through" : "" }}
+        >
             {props.item}
+            <div>
+        <button onClick={() => completeItem(index)}>Complete</button>
+      </div>
         </div>
     );
 }
