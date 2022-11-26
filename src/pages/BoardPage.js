@@ -34,7 +34,6 @@ function BoardPage(props) {
       const q = query(boardsRef, where('boardID', '==', id));
       const docs = await getDocs(q);
       const boards = docs.docs.map(item => item.data());
-      console.log(boards);
       setTitle(boards[0].boardTitle);
       setDescription(boards[0].boardDescription);
     }
@@ -108,7 +107,7 @@ function addNoteToDB() {
     </button>
     <div>Logged in as {user?.email}</div>       
 
-      
+
 
     <div className="notes">
       {notesToShow && notesToShow.map((note,index) => (
