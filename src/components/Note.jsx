@@ -6,12 +6,11 @@ import { Link } from "react-router-dom";
 import Modal  from 'react-bootstrap/Modal';
 import {useState} from 'react';
 
-function Board(props) {
-
+function Note(props){
     const [modalShow, setModalShow] = useState(false);
     
     function deleteFN(){
-        props.deleteFromDB(props.boardID);
+        props.deleteFromDB(props.noteID);
     }
 
     const onShow = () => {
@@ -35,9 +34,6 @@ function Board(props) {
         <Card.Text>
             {props.description}
         </Card.Text>
-        <Link to={"../board/" + props.boardID} relative="path">
-            <Button variant="primary">See Notes</Button>
-        </Link>
       </Card.Body>
     
     
@@ -52,12 +48,12 @@ function Board(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Delete A Board
+          Delete A Note
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          Selecting confirm will delete the board. This action cannot be undone.
+          Selecting confirm will delete the note. This action cannot be undone.
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -66,8 +62,7 @@ function Board(props) {
     </Modal>
 
     </Card>
-    
-  );
+    );
 }
 
-export default Board;
+export default Note;

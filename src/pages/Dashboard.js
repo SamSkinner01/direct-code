@@ -25,8 +25,6 @@ function Dashboard() {
   const handleShow = () => setShow(true);
 
   const fetchBoards = async () => { 
-
-    //console.log("Fetching boards");
     
     try{
       const userID = user?.uid || "";

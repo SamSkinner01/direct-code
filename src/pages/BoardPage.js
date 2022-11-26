@@ -13,36 +13,45 @@ import {
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {v4 as uuidv4} from 'uuid';
 import {useParams} from "react-router-dom";
+import Note from "../components/Note";
 
 function BoardPage(props) {
-  //const currentUser = getAuth(auth);
-  // const boardID = props.match.params.id;
   const {id} = useParams();
   const boardID = id;
-
-
   const [user, loading, error] = useAuthState(auth);
-  const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [boardsToShow, setBoardsToShow] = useState([]);
   const navigate = useNavigate();
-
+  const [title, setTitle] = useState("");
+  const [noteTitle, setNoteTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [show, setShow] = useState(false);
+  const [notesToShow, setNotesToShow] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const fetchBoards = async () => { 
-
-    //console.log("Fetching boards");
-    
+  const fetchBoardTitleAndDescription = async () => {
     try{
-      const userID = user?.uid || "";
       const boardsRef = collection(db, 'boards');
-      const q = query(boardsRef, where('uid', '==', userID));
+      const q = query(boardsRef, where('boardID', '==', id));
       const docs = await getDocs(q);
       const boards = docs.docs.map(item => item.data());
-      if(boards.length !== boardsToShow.length){
-        setBoardsToShow(boards);
+      console.log(boards);
+      setTitle(boards[0].boardTitle);
+      setDescription(boards[0].boardDescription);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
+  const fetchNotes = async () => { 
+    
+    try{
+      const boardsRef = collection(db, 'notes');
+      const q = query(boardsRef, where('boardID', '==', id));
+      const docs = await getDocs(q);
+      const notes = docs.docs.map(item => item.data());
+      if(notes.length !== notesToShow.length){
+        setNotesToShow(notes);
       }
     }
     catch(err){
@@ -51,55 +60,57 @@ function BoardPage(props) {
 
   }
 
-  function addBoardToDB() {
+function addNoteToDB() {
     handleClose();
 
-    addDoc(collection(db, "boards"), {
-      boardTitle: title,
-      boardDescription: description,
-      uid: user.uid,
-      boardID: uuidv4(),
+    addDoc(collection(db, "notes"), {
+      noteTitle: noteTitle,
+      boardID: id,
+      noteID: uuidv4(),
     });  
 
-    fetchBoards();
+    fetchNotes();
   }
 
-  async function deleteFromDB(bid) {
+  async function deleteFromDB(nid) {
     try{
-      getDocs(collection(db, "boards")).then((querySnapshot) => {
+      getDocs(collection(db, "notes")).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if(doc.data().boardID === bid){
+          if(doc.data().noteID === nid){
             deleteDoc(doc.ref);
           }
         });
       });
-      fetchBoards();
+      fetchNotes();
     }
     catch(err){
       console.log(err);
     }
   }
+  
+
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
   }, [user, loading]);
 
-  fetchBoards();
 
+  fetchBoardTitleAndDescription();
+  fetchNotes();
   return (
     <>
 
-    <h1>Current Boards</h1>
+    <h1>{title}</h1>
+    <h2>{description}</h2>
     <button onClick={logout}>
           Logout
     </button>
-    <div>Logged in as {user?.email}  {boardID}</div>       
+    <div>Logged in as {user?.email}</div>       
     
-    
-    <div className="boards">
-      {boardsToShow && boardsToShow.map((board,index) => (
-        <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
+    <div className="notes">
+      {notesToShow && notesToShow.map((note,index) => (
+        <Note key={index} title={note.noteTitle} noteID={note.noteID} deleteFromDB={deleteFromDB}/>
         
       ))}
     </div>
@@ -114,25 +125,13 @@ function BoardPage(props) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="title">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Note Title</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Board Title"
+                placeholder="Note Title"
                 autoFocus
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="description"
-            >
-              <Form.Label>Board Description</Form.Label>
-              <Form.Control 
-              as="textarea" 
-              rows={3} 
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+                value={noteTitle}
+                onChange={(e) => setNoteTitle(e.target.value)}
               />
             </Form.Group>
           </Form>
@@ -141,11 +140,12 @@ function BoardPage(props) {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={addBoardToDB}>
+          <Button variant="primary" onClick={addNoteToDB}>
             Save
           </Button>
         </Modal.Footer>
       </Modal>
+    
     </>
   );
 }
