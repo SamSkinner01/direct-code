@@ -11,11 +11,7 @@ import ItemForm from './ItemForm';
 function Note(props) {
 
     const [modalShow, setModalShow] = useState(false);
-    const [items, setItems] = useState([
-        { text: "Learn about React", isCompleted: false },
-        { text: "Meet friend for lunch", isCompleted: false },
-        { text: "Build really cool Item app", isCompleted: false }
-    ]);
+    const [items, setItems] = useState([]);
 
     const addItem = text => {
         const newItems = [...items, { text }];
@@ -25,6 +21,12 @@ function Note(props) {
       const completeItem = index => {
         const newItems = [...items];
         newItems[index].isCompleted = true;
+        setItems(newItems);
+      };
+
+      const removeItem = index => {
+        const newItems = [...items];
+        newItems.splice(index, 1);
         setItems(newItems);
       };
       
@@ -57,8 +59,9 @@ function Note(props) {
                             <Item
                                 key={index}
                                 index={index}
-                                item={item.text}
+                                item={item}
                                 completeItem={completeItem}
+                                removeItem={removeItem}
                             />
                         ))}
 
