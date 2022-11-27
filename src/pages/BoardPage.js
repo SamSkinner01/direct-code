@@ -25,7 +25,11 @@ function BoardPage(props) {
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
   const [notesToShow, setNotesToShow] = useState([]);
-  const handleClose = () => setShow(false);
+
+  const handleClose = () => {
+    setShow(false);
+    setNoteTitle("");
+  }
   const handleShow = () => setShow(true);
 
   const fetchBoardTitleAndDescription = async () => {
@@ -67,6 +71,8 @@ function addNoteToDB() {
       boardID: id,
       noteID: uuidv4(),
     });  
+
+    setNoteTitle("");
 
     fetchNotes();
   }

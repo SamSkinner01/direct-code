@@ -21,7 +21,11 @@ function Dashboard() {
   const [boardsToShow, setBoardsToShow] = useState([]);
   const navigate = useNavigate();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setTitle("");
+    setDescription("");  
+  };
   const handleShow = () => setShow(true);
 
   const fetchBoards = async () => { 
@@ -51,6 +55,9 @@ function Dashboard() {
       uid: user.uid,
       boardID: uuidv4(),
     });  
+
+    setTitle("");
+    setDescription("");
 
     fetchBoards();
   }
