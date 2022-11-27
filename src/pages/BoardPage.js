@@ -64,6 +64,12 @@ function BoardPage(props) {
   }
 
 function addNoteToDB() {
+
+  if(noteTitle === ""){
+    alert("Please fill out all fields");
+    return;
+  }
+
     handleClose();
 
     addDoc(collection(db, "notes"), {
@@ -135,10 +141,16 @@ function addNoteToDB() {
             <Form.Group className="mb-3" controlId="title">
               <Form.Label>Note Title</Form.Label>
               <Form.Control
+                required
                 type="text"
                 placeholder="Note Title"
                 autoFocus
                 value={noteTitle}
+                onKeyPress = {(event) => {
+                  if(event.key === 'Enter'){
+                    addNoteToDB();
+                  }
+                }}
                 onChange={(e) => setNoteTitle(e.target.value)}
               />
             </Form.Group>
@@ -148,7 +160,7 @@ function addNoteToDB() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={addNoteToDB}>
+          <Button type="submit" variant="primary" onClick={addNoteToDB}>
             Save
           </Button>
         </Modal.Footer>

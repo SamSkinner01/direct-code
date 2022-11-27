@@ -47,6 +47,12 @@ function Dashboard() {
   }
 
   function addBoardToDB() {
+
+    if(title === ""){
+      alert("Please fill out the title field");
+      return;
+    }
+
     handleClose();
 
     addDoc(collection(db, "boards"), {
@@ -77,7 +83,7 @@ function Dashboard() {
       console.log(err);
     }
   }
-  
+
 
   useEffect(() => {
     if (loading) return;
@@ -123,6 +129,11 @@ function Dashboard() {
                 placeholder="Board Title"
                 autoFocus
                 value={title}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    addBoardToDB();
+                  }
+                }}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <Form.Control.Feedback>Please enter a title.</Form.Control.Feedback>
