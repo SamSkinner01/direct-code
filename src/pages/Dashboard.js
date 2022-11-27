@@ -31,14 +31,11 @@ function Dashboard() {
   const fetchBoards = async () => { 
     
     try{
-      const userID = user?.uid || "";
       const boardsRef = collection(db, 'boards');
-      const q = query(boardsRef, where('uid', '==', userID));
+      const q = query(boardsRef, where('uid', '==', user.uid));
       const docs = await getDocs(q);
       const boards = docs.docs.map(item => item.data());
-      if(boards.length !== boardsToShow.length){
-        setBoardsToShow(boards);
-      }
+      setBoardsToShow(boards);
     }
     catch(err){
       console.log(err);
@@ -88,9 +85,13 @@ function Dashboard() {
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
+    fetchBoards();
   }, [user, loading]);
 
-  fetchBoards();
+  useEffect(() => {
+    fetchBoards();
+  }, [boardsToShow.length]);
+
 
   return (
     <>
