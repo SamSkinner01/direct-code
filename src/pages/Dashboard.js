@@ -5,13 +5,22 @@ import "../css/dashboard.css";
 import { auth, db } from "../Firebase";
 import { logout } from "../userAuth";
 import Board from "../components/Board";
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import {
-  getFirestore, query, getDocs, collection, where, addDoc, map, doc, deleteDoc} from "firebase/firestore";
+  getFirestore,
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  map,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
@@ -22,30 +31,26 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    setShow(false)
+    setShow(false);
     setTitle("");
-    setDescription("");  
+    setDescription("");
   };
   const handleShow = () => setShow(true);
 
-  const fetchBoards = async () => { 
-    
-    try{
-      const boardsRef = collection(db, 'boards');
-      const q = query(boardsRef, where('uid', '==', user.uid));
+  const fetchBoards = async () => {
+    try {
+      const boardsRef = collection(db, "boards");
+      const q = query(boardsRef, where("uid", "==", user.uid));
       const docs = await getDocs(q);
-      const boards = docs.docs.map(item => item.data());
+      const boards = docs.docs.map((item) => item.data());
       setBoardsToShow(boards);
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-
-  }
+  };
 
   function addBoardToDB() {
-
-    if(title === ""){
+    if (title === "") {
       alert("Please fill out the title field");
       return;
     }
@@ -57,7 +62,7 @@ function Dashboard() {
       boardDescription: description,
       uid: user.uid,
       boardID: uuidv4(),
-    });  
+    });
 
     setTitle("");
     setDescription("");
@@ -66,21 +71,19 @@ function Dashboard() {
   }
 
   async function deleteFromDB(bid) {
-    try{
+    try {
       getDocs(collection(db, "boards")).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if(doc.data().boardID === bid){
+          if (doc.data().boardID === bid) {
             deleteDoc(doc.ref);
           }
         });
       });
       fetchBoards();
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
   }
-
 
   useEffect(() => {
     if (loading) return;
@@ -92,31 +95,51 @@ function Dashboard() {
     fetchBoards();
   }, [boardsToShow.length]);
 
-
   return (
     <>
+      <div className="header">
+        <div className="header__left">
+          <h1>Direct</h1>
+        </div>
+        <div className="header__right">
+          <div className="logged-in-as">Logged in as {user?.email}</div>
+          <button onClick={logout}>Logout</button>
+        </div>
+      </div>
 
-    <h1>Current Boards</h1>
-    <button onClick={logout}>
-          Logout
-    </button>
-    <div>Logged in as {user?.email}</div>       
-    
-   
-    {boardsToShow.length === 0 ? <div className="no-boards"><h2>You haven't made a board yet. Go make one!</h2></div> :
-     <div className="boards">
-     {boardsToShow && boardsToShow.map((board,index) => (
-       <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
-     ))}
-   </div>
-    }
-    
-   
+      <div classname="dashboard--header">
+        <div className="dashboard--header__left">
+          <h2>Current Boards</h2>
+        </div>
+        <div className="dashboard--header__right">
+          <Button variant="primary" onClick={handleShow}>
+            Create A Board
+          </Button>
+        </div>
+      </div>
 
-    <Button variant="primary" onClick={handleShow}>
-        +
-    </Button>
-    <Modal show={show} onHide={handleClose}>
+      {boardsToShow.length === 0 ? (
+        <div className="no-boards">
+          <h2>You haven't made a board yet. Go make one!</h2>
+        </div>
+      ) : (
+        <div className="row">
+          {boardsToShow &&
+            boardsToShow.map((board, index) => (
+              <div className="boards col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                <Board
+                  key={index}
+                  title={board.boardTitle}
+                  description={board.boardDescription}
+                  boardID={board.boardID}
+                  deleteFromDB={deleteFromDB}
+                />
+              </div>
+            ))}
+        </div>
+      )}
+
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create Board</Modal.Title>
         </Modal.Header>
@@ -137,18 +160,17 @@ function Dashboard() {
                 }}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              <Form.Control.Feedback>Please enter a title.</Form.Control.Feedback>
+              <Form.Control.Feedback>
+                Please enter a title.
+              </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="description"
-            >
+            <Form.Group className="mb-3" controlId="description">
               <Form.Label>Board Description</Form.Label>
-              <Form.Control 
-              as="textarea" 
-              rows={3} 
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Group>
           </Form>
