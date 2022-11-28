@@ -92,7 +92,7 @@ function BoardPage(props) {
       });
 
       // PLEASE FIX LATER
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 200));
       fetchNotes();
     } catch (err) {
       console.log(err);

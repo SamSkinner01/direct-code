@@ -85,7 +85,7 @@ function Dashboard() {
       });
 
       // PLEASE FIX THIS, NOT PERMANENT SOLUTION
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 200));
       fetchBoards();
     } catch (err) {
       console.log(err);
