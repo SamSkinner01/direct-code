@@ -22,8 +22,12 @@ function Login() {
 
 
   return (
+    <>
+    
     <div className="login">
       <div className="login__container">
+      <h1>Direct</h1>
+      <h2>Login</h2>
         <input
           type="text"
           className="login__textBox"
@@ -55,6 +59,7 @@ function Login() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

@@ -1,25 +1,65 @@
-.dashboard {
-    height: 100vh;
-    width: 100vw;
+.header{
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 15px;
+    position: relative;
+    z-index: 10;
+}
+
+.header__left{
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-  .dashboard__container {
+    flex: 0.3;
+}
+
+.header__right{
     display: flex;
-    flex-direction: column;
-    text-align: center;
-    background-color: #dcdcdc;
-    padding: 30px;
-  }
-  .dashboard__btn {
-    padding: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0.7;
+}
+
+.logged-in-as{
+    margin-right: 10px;
+}
+
+.no-boards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20rem;
+    font-size: 20px;
+}
+
+.boards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card{
+  margin-bottom: 10px;
+}
+
+.dashboard--header__left{
+    /* display: flex; */
+    align-items: center;
+    flex: 0.3;
+    padding-left: 10px;
+}
+
+.dashboard--header__right{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0.7;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.input{
+    padding: 5px;
     font-size: 18px;
-    margin-top: 10px;
-    border: none;
-    color: white;
-    background-color: black;
-  }
-  .dashboard div {
-    margin-top: 7px;
-  }
+    width: 90%;
+
+}

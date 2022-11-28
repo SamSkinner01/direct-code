@@ -29,6 +29,8 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
+      <h1>Direct</h1>
+      <h2>Create an Account</h2>
         <input
           type="email"
           className="register__textBox"

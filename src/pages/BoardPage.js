@@ -112,26 +112,46 @@ function addNoteToDB() {
   return (
     <>
 
-    <h1>{title}</h1>
-    <h2>{description}</h2>
-    <button onClick={logout}>
-          Logout
-    </button>
-    <div>Logged in as {user?.email}</div>       
+      
+      
+      
+    <div className="header">
+      <div className="header__left">
+        <h1>Direct</h1>
+    
+    </div>
+      <div className="header__right">
+        <div className="logged-in-as">Logged in as {user?.email}</div>  
+          <button onClick={logout}>
+                Logout
+          </button>
+        </div>     
+      </div>
+
+    <div classname="dashboard--header">
+      <div className="dashboard--header__left">
+        <h2>Current Note: {title}</h2>
+        <h3>Note Description: {description}</h3>
+    </div>
+    <div className="dashboard--header__right">
+    <Button variant="primary" onClick={handleShow}>
+        Create a Note
+    </Button>
+    </div>
+    </div>
 
 
-    {notesToShow.length === 0 ? <div className="no-notes"><h2>You currently have not created a note. Go make one!</h2></div> :
-    <div className="notes">
+    {notesToShow.length === 0 ? <div className="no-boards"><h2>You currently have not created a note. Go make one!</h2></div> :
+    <div className="row">
       {notesToShow && notesToShow.map((note,index) => (
+        <div className="boards col-lg-2 col-md-4 col-sm-6 col-xs-12">
         <Note key={index} title={note.noteTitle} noteID={note.noteID} deleteFromDB={deleteFromDB}/>
-        
+        </div>
       ))}
     </div>
   }
 
-    <Button variant="primary" onClick={handleShow}>
-        +
-    </Button>
+    
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create Board</Modal.Title>

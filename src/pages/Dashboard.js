@@ -96,26 +96,43 @@ function Dashboard() {
   return (
     <>
 
-    <h1>Current Boards</h1>
-    <button onClick={logout}>
-          Logout
-    </button>
-    <div>Logged in as {user?.email}</div>       
-    
-   
+    <div className="header">
+      <div className="header__left">
+      <h1>Direct</h1>
+      </div>
+      <div className="header__right">
+      <div className="logged-in-as">Logged in as {user?.email}</div>  
+      <button onClick={logout}>
+            Logout
+      </button>
+       
+      </div>
+    </div>
+        
+    <div classname="dashboard--header">
+      <div className="dashboard--header__left">
+   <h2>Current Boards</h2>
+      </div>
+      <div className="dashboard--header__right">
+   <Button variant="primary" onClick={handleShow}>
+        Create A Board
+    </Button>
+    </div>
+    </div>
+
     {boardsToShow.length === 0 ? <div className="no-boards"><h2>You haven't made a board yet. Go make one!</h2></div> :
-     <div className="boards">
+     <div className="row">
      {boardsToShow && boardsToShow.map((board,index) => (
-       <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
+        <div className="boards col-lg-2 col-md-4 col-sm-6 col-xs-12">
+          <Board key={index} title={board.boardTitle} description={board.boardDescription} boardID={board.boardID} deleteFromDB={deleteFromDB}/>
+        </div>
      ))}
    </div>
     }
     
    
 
-    <Button variant="primary" onClick={handleShow}>
-        +
-    </Button>
+    
     <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create Board</Modal.Title>

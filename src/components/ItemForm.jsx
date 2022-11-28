@@ -1,5 +1,5 @@
 import {useState} from 'react';
-
+import "../css/dashboard.css";
 function ItemForm({ addItem }) {
     const [value, setValue] = useState("");
   
@@ -18,6 +18,7 @@ function ItemForm({ addItem }) {
           type="text"
           className="input"
           value={value}
+          size="11"
           onChange={e => setValue(e.target.value)}
         />
       </form>
