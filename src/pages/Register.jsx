@@ -5,7 +5,6 @@ import { auth } from "../Firebase";
 import { registerWithEmailAndPassword, signInWithGoogle } from "../userAuth";
 import "../css/register.css";
 
-
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,18 +18,16 @@ function Register() {
     registerWithEmailAndPassword(email, password);
   };
 
-
   useEffect(() => {
     if (loading) return;
     if (user) navigate("/dashboard");
   }, [user, loading]);
 
-
   return (
     <div className="register">
       <div className="register__container">
-      <h1>Direct</h1>
-      <h2>Create an Account</h2>
+        <h1>Direct</h1>
+        <h2>Create an Account</h2>
         <input
           type="email"
           className="register__textBox"
@@ -60,6 +57,5 @@ function Register() {
       </div>
     </div>
   );
-
 }
 export default Register;

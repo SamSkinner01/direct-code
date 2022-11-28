@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,7 +14,7 @@ function App() {
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/reset" element={<Reset />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route path="/board/:id" element={<BoardPage />}/> 
+          <Route path="/board/:id" element={<BoardPage />} />
         </Routes>
       </Router>
     </div>
