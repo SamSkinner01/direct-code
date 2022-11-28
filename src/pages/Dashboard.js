@@ -43,7 +43,9 @@ function Dashboard() {
       const q = query(boardsRef, where("uid", "==", user.uid));
       const docs = await getDocs(q);
       const boards = docs.docs.map((item) => item.data());
-      setBoardsToShow(boards);
+      console.table(boards);
+      console.log(boards.length);
+      setBoardsToShow(boards.length > 0 ? boards : []);
     } catch (err) {
       console.log(err);
     }
@@ -75,10 +77,15 @@ function Dashboard() {
       getDocs(collection(db, "boards")).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           if (doc.data().boardID === bid) {
-            deleteDoc(doc.ref);
+            deleteDoc(doc.ref).then(() => {
+              console.log("Document successfully deleted!");
+            });
           }
         });
       });
+
+      // PLEASE FIX THIS, NOT PERMANENT SOLUTION
+      await new Promise(r => setTimeout(r, 100));
       fetchBoards();
     } catch (err) {
       console.log(err);

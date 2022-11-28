@@ -90,6 +90,9 @@ function BoardPage(props) {
           }
         });
       });
+
+      // PLEASE FIX LATER
+      await new Promise(r => setTimeout(r, 100));
       fetchNotes();
     } catch (err) {
       console.log(err);
