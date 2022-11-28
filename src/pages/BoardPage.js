@@ -4,20 +4,23 @@ import { useNavigate } from "react-router-dom";
 import "../css/dashboard.css";
 import { auth, db } from "../Firebase";
 import { logout } from "../userAuth";
-import Board from "../components/Board";
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import {
-  getFirestore, query, getDocs, collection, where, addDoc, map, doc, deleteDoc} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {v4 as uuidv4} from 'uuid';
-import {useParams} from "react-router-dom";
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router-dom";
 import Note from "../components/Note";
 
 function BoardPage(props) {
-  const {id} = useParams();
-  const boardID = id;
+  const { id } = useParams();
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -29,46 +32,41 @@ function BoardPage(props) {
   const handleClose = () => {
     setShow(false);
     setNoteTitle("");
-  }
+  };
   const handleShow = () => setShow(true);
 
   const fetchBoardTitleAndDescription = async () => {
-    try{
-      const boardsRef = collection(db, 'boards');
-      const q = query(boardsRef, where('boardID', '==', id));
+    try {
+      const boardsRef = collection(db, "boards");
+      const q = query(boardsRef, where("boardID", "==", id));
       const docs = await getDocs(q);
-      const boards = docs.docs.map(item => item.data());
+      const boards = docs.docs.map((item) => item.data());
       setTitle(boards[0].boardTitle);
       setDescription(boards[0].boardDescription);
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  const fetchNotes = async () => { 
-    
-    try{
-      const boardsRef = collection(db, 'notes');
-      const q = query(boardsRef, where('boardID', '==', id));
+  const fetchNotes = async () => {
+    try {
+      const boardsRef = collection(db, "notes");
+      const q = query(boardsRef, where("boardID", "==", id));
       const docs = await getDocs(q);
-      const notes = docs.docs.map(item => item.data());
-      if(notes.length !== notesToShow.length){
+      const notes = docs.docs.map((item) => item.data());
+      if (notes.length !== notesToShow.length) {
         setNotesToShow(notes);
       }
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
+  };
 
-  }
-
-function addNoteToDB() {
-
-  if(noteTitle === ""){
-    alert("Please fill out all fields");
-    return;
-  }
+  function addNoteToDB() {
+    if (noteTitle === "") {
+      alert("Please fill out all fields");
+      return;
+    }
 
     handleClose();
 
@@ -76,7 +74,7 @@ function addNoteToDB() {
       noteTitle: noteTitle,
       boardID: id,
       noteID: uuidv4(),
-    });  
+    });
 
     setNoteTitle("");
 
@@ -84,75 +82,72 @@ function addNoteToDB() {
   }
 
   async function deleteFromDB(nid) {
-    try{
+    try {
       getDocs(collection(db, "notes")).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if(doc.data().noteID === nid){
+          if (doc.data().noteID === nid) {
             deleteDoc(doc.ref);
           }
         });
       });
       fetchNotes();
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
   }
-  
-
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
   }, [user, loading]);
 
-
   fetchBoardTitleAndDescription();
   fetchNotes();
   return (
     <>
-
-      
-      
-      
-    <div className="header">
-      <div className="header__left">
-        <h1>Direct</h1>
-    
-    </div>
-      <div className="header__right">
-        <div className="logged-in-as">Logged in as {user?.email}</div>  
-          <button onClick={logout}>
-                Logout
-          </button>
-        </div>     
+      <div className="header">
+        <div className="header__left">
+          <h1>Direct</h1>
+        </div>
+        <div className="header__right">
+          <div className="logged-in-as">Logged in as {user?.email}</div>
+          <button onClick={logout}>Logout</button>
+        </div>
       </div>
 
-    <div classname="dashboard--header">
-      <div className="dashboard--header__left">
-        <h2>Current Note: {title}</h2>
-        <h3>Note Description: {description}</h3>
-    </div>
-    <div className="dashboard--header__right">
-    <Button variant="primary" onClick={handleShow}>
-        Create a Note
-    </Button>
-    </div>
-    </div>
-
-
-    {notesToShow.length === 0 ? <div className="no-boards"><h2>You currently have not created a note. Go make one!</h2></div> :
-    <div className="row">
-      {notesToShow && notesToShow.map((note,index) => (
-        <div className="boards col-lg-2 col-md-4 col-sm-6 col-xs-12">
-        <Note key={index} title={note.noteTitle} noteID={note.noteID} deleteFromDB={deleteFromDB}/>
+      <div classname="dashboard--header">
+        <div className="dashboard--header__left">
+          <h2>Current Note: {title}</h2>
+          <h3>Note Description: {description}</h3>
         </div>
-      ))}
-    </div>
-  }
+        <div className="dashboard--header__right">
+          <Button variant="primary" onClick={handleShow}>
+            Create a Note
+          </Button>
+        </div>
+      </div>
 
-    
-    <Modal show={show} onHide={handleClose}>
+      {notesToShow.length === 0 ? (
+        <div className="no-boards">
+          <h2>You currently have not created a note. Go make one!</h2>
+        </div>
+      ) : (
+        <div className="row">
+          {notesToShow &&
+            notesToShow.map((note, index) => (
+              <div className="boards col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                <Note
+                  key={index}
+                  title={note.noteTitle}
+                  noteID={note.noteID}
+                  deleteFromDB={deleteFromDB}
+                />
+              </div>
+            ))}
+        </div>
+      )}
+
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create Board</Modal.Title>
         </Modal.Header>
@@ -166,8 +161,8 @@ function addNoteToDB() {
                 placeholder="Note Title"
                 autoFocus
                 value={noteTitle}
-                onKeyPress = {(event) => {
-                  if(event.key === 'Enter'){
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
                     addNoteToDB();
                   }
                 }}
@@ -185,7 +180,6 @@ function addNoteToDB() {
           </Button>
         </Modal.Footer>
       </Modal>
-    
     </>
   );
 }
