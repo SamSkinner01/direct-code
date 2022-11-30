@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../css/dashboard.css";
 import { auth, db } from "../Firebase";
 import { logout } from "../userAuth";
@@ -103,7 +103,7 @@ function Dashboard() {
         </div>
         <div className="header__right">
           <div className="logged-in-as">Logged in as {user?.email}</div>
-          <button onClick={logout}>Logout</button>
+          <button data-testid="logout-button" onClick={logout}>Logout</button>
         </div>
       </div>
 
@@ -112,7 +112,7 @@ function Dashboard() {
           <h2>Current Boards</h2>
         </div>
         <div className="dashboard--header__right">
-          <Button variant="primary" onClick={handleShow}>
+          <Button data-testid="create-board" variant="primary" onClick={handleShow}>
             Create A Board
           </Button>
         </div>

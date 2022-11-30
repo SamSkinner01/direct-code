@@ -117,8 +117,8 @@ function BoardPage(props) {
 
       <div classname="dashboard--header">
         <div className="dashboard--header__left">
-          <h2>Current Note: {title}</h2>
-          <h3>Note Description: {description}</h3>
+          <h2>You are on the board titled: {title}</h2>
+          <h4>Board Description: {description}</h4>
         </div>
         <div className="dashboard--header__right">
           <Button variant="primary" onClick={handleShow}>
