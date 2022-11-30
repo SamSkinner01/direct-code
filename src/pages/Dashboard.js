@@ -43,8 +43,6 @@ function Dashboard() {
       const q = query(boardsRef, where("uid", "==", user.uid));
       const docs = await getDocs(q);
       const boards = docs.docs.map((item) => item.data());
-      console.table(boards);
-      console.log(boards.length);
       setBoardsToShow(boards.length > 0 ? boards : []);
     } catch (err) {
       console.log(err);
