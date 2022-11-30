@@ -30,13 +30,17 @@ function Dashboard() {
   const [boardsToShow, setBoardsToShow] = useState([]);
   const navigate = useNavigate();
 
+  // closes and reset the modal
   const handleClose = () => {
     setShow(false);
     setTitle("");
     setDescription("");
   };
+
+  // opens the modal
   const handleShow = () => setShow(true);
 
+  // fetches the boards from the database and updates boardsToShow
   const fetchBoards = async () => {
     try {
       const boardsRef = collection(db, "boards");
@@ -49,6 +53,7 @@ function Dashboard() {
     }
   };
 
+  // adds a new board to the database
   function addBoardToDB() {
     if (title === "") {
       alert("Please fill out the title field");
@@ -70,6 +75,7 @@ function Dashboard() {
     fetchBoards();
   }
 
+  // deletes a board from the database
   async function deleteFromDB(bid) {
     try {
       getDocs(collection(db, "boards")).then((querySnapshot) => {
@@ -82,7 +88,6 @@ function Dashboard() {
         });
       });
 
-      // PLEASE FIX THIS, NOT PERMANENT SOLUTION
       await new Promise(r => setTimeout(r, 200));
       fetchBoards();
     } catch (err) {
@@ -90,12 +95,15 @@ function Dashboard() {
     }
   }
 
+  // checks if the user is logged in
+  // if not, redirect to login page
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
     fetchBoards();
   }, [user, loading]);
 
+  // fetchBoards when boardsToShow length changes
   useEffect(() => {
     fetchBoards();
   }, [boardsToShow.length]);

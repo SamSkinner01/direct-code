@@ -5,6 +5,7 @@ import Reset from "./pages/Reset";
 import Dashboard from "./pages/Dashboard";
 import BoardPage from "./pages/BoardPage";
 
+// Load components depending on the route
 function App() {
   return (
     <div className="app">

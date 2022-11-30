@@ -11,11 +11,9 @@ function Login() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
 
+  // if the user is logged in, route them to the dashboard
   useEffect(() => {
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
+    if (loading) return;
     if (user) navigate("/dashboard");
   }, [user, loading]);
 

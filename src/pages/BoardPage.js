@@ -22,19 +22,23 @@ import Note from "../components/Note";
 function BoardPage(props) {
   const { id } = useParams();
   const [user, loading, error] = useAuthState(auth);
-  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [noteTitle, setNoteTitle] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
   const [notesToShow, setNotesToShow] = useState([]);
+  const navigate = useNavigate();
 
+  // closes and reset the modal
   const handleClose = () => {
     setShow(false);
     setNoteTitle("");
   };
+
+  // opens the modal
   const handleShow = () => setShow(true);
 
+  // fetches the board title and description from the database and updates and sets each
   const fetchBoardTitleAndDescription = async () => {
     try {
       const boardsRef = collection(db, "boards");
@@ -48,6 +52,7 @@ function BoardPage(props) {
     }
   };
 
+  // fetches the notes from the database and updates notesToShow
   const fetchNotes = async () => {
     try {
       const boardsRef = collection(db, "notes");
@@ -62,6 +67,7 @@ function BoardPage(props) {
     }
   };
 
+  // adds a new note to the database
   function addNoteToDB() {
     if (noteTitle === "") {
       alert("Please fill out all fields");
@@ -81,6 +87,7 @@ function BoardPage(props) {
     fetchNotes();
   }
 
+  // deletes a note from the database
   async function deleteFromDB(nid) {
     try {
       getDocs(collection(db, "notes")).then((querySnapshot) => {
@@ -91,7 +98,6 @@ function BoardPage(props) {
         });
       });
 
-      // PLEASE FIX LATER
       await new Promise(r => setTimeout(r, 200));
       fetchNotes();
     } catch (err) {
@@ -99,6 +105,7 @@ function BoardPage(props) {
     }
   }
 
+  // if user is not logged in, redirect to login page
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");

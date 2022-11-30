@@ -9,18 +9,23 @@ import { useState } from "react";
 function Board(props) {
   const [modalShow, setModalShow] = useState(false);
 
+  // delete board from database, function passed through props
   function deleteFN() {
     props.deleteFromDB(props.boardID);
   }
 
+  // show modal
   const onShow = () => {
     setModalShow(true);
   };
 
+  // hide modal
   const onHide = () => {
     setModalShow(false);
   };
 
+  // hide modal and delete board 
+  // this is the function that is called when the user confirms deletion
   const onHideConfirm = () => {
     setModalShow(false);
     deleteFN();

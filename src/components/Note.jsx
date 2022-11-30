@@ -21,6 +21,7 @@ function Note(props) {
   const [modalShow, setModalShow] = useState(false);
   const [items, setItems] = useState([]);
 
+  // get all items for each note from database
   const fetchItems = async () => {
     try {
       const boardsRef = collection(db, "items");
@@ -35,6 +36,7 @@ function Note(props) {
     }
   };
 
+  // add item to database
   const addItem = (text) => {
     const itemID = uuidv4();
     const newItems = [
@@ -53,6 +55,8 @@ function Note(props) {
     });
   };
 
+  // will put a line through an item if completed. 
+  // also if item is completed, it will be updated in the DB
   const completeItem = (index, itemID) => {
     const newItems = [...items];
     newItems[index].isCompleted = true;
@@ -74,6 +78,7 @@ function Note(props) {
     }
   };
 
+  // removes item from database
   const removeItem = (index, itemID) => {
     const newItems = [...items];
     newItems.splice(index, 1);
@@ -97,14 +102,17 @@ function Note(props) {
     props.deleteFromDB(props.noteID);
   }
 
+  // show modal for adding notes
   const onShow = () => {
     setModalShow(true);
   };
 
+  // hide modal for adding notes
   const onHide = () => {
     setModalShow(false);
   };
 
+  // delete note from db
   const onHideConfirm = () => {
     setModalShow(false);
     deleteFN();

@@ -3,6 +3,7 @@ import "../css/dashboard.css";
 function ItemForm({ addItem }) {
   const [value, setValue] = useState("");
 
+  // handles adding a new item
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!value) return;
