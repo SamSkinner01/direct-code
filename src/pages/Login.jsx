@@ -10,6 +10,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
+  
+  const [err, setErr] = useState(null);
 
   // if the user is logged in, route them to the dashboard
   useEffect(() => {
@@ -17,11 +19,12 @@ function Login() {
     if (user) navigate("/dashboard");
   }, [user, loading]);
 
+  
   return (
     <>
       <div className="login">
         <div className="login__container">
-          <h1>Direct</h1>
+          <h1 id="title">Direct</h1>
           <h2>Login</h2>
           <input
             type="text"
@@ -37,23 +40,56 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
+          <div className="login__error">
+            {err && <p>{err}</p>}
+          </div>
           <button
             className="login__btn"
-            onClick={() => loginWithEmailAndPassword(email, password)}
+            onClick={() =>{
+              if (!email || !password) {
+                setErr("Please enter an email and password");
+                return;
+              }
+              if (!email.includes("@")) {
+                setErr("Please enter a valid email");
+                return;
+              }
+              loginWithEmailAndPassword(email, password)
+              .then((user) => {
+                if (!user) {
+                  setErr("Invalid email or password");
+                }
+              })
+              setErr(null);
+              
+            }
+            }
           >
             Login
           </button>
           <button
             className="login__btn login__google"
-            onClick={signInWithGoogle}
+            onClick={()=>{
+              signInWithGoogle()
+              .then((user) => {
+                if (!user) {
+                  setErr("Something went wrong...Try logging in again.");
+                  return
+                }
+              }
+              
+              )
+              setErr(null);
+            }
+            }
           >
             Login with Google
           </button>
           <div>
-            <Link to="/reset">Forgot Password</Link>
+            <Link  class ="link" to="/reset">Forgot Password</Link>
           </div>
           <div>
-            Don't have an account? <Link to="/register">Register</Link> now.
+            Don't have an account? <Link class ="link" to="/register">Register</Link> now.
           </div>
         </div>
       </div>

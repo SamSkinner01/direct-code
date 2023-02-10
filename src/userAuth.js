@@ -44,7 +44,6 @@ const signInWithGoogle = async () => {
   } catch (err) {
     // If error console log and alert user
     console.log(err);
-    alert(err.message);
   }
 };
 
@@ -56,8 +55,8 @@ const loginWithEmailAndPassword = async (email, password) => {
   } catch (err) {
     // If error console log and alert user
     console.log(err);
-    alert(err.message);
   }
+  
 };
 
 // Sign up with email and password

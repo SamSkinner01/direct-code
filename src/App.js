@@ -9,6 +9,7 @@ import BoardPage from "./pages/BoardPage";
 function App() {
   return (
     <div className="app">
+      
       <Router>
         <Routes>
           <Route exact path="/" element={<Login />} />
