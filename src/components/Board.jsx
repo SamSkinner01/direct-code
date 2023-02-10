@@ -33,7 +33,7 @@ function Board(props) {
 
   return (
 
-      <Card style={{ width: "18rem" }}>
+      <Card class = "card" style={{ width: "18rem" }}>
         <Card.Body>
             <div class="descriptors">
               <Card.Title>{props.title}</Card.Title>
