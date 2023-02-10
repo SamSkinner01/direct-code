@@ -75,7 +75,6 @@ const registerWithEmailAndPassword = async (email, password) => {
   } catch (err) {
     // If error console log and alert user
     console.log(err);
-    alert(err.message);
   }
 };
 
@@ -84,12 +83,9 @@ const sendPasswordReset = async (email) => {
   try {
     // Try to send password reset email
     await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent!");
   } catch (err) {
     // If error console log and alert user
-    console.log(err);
-    alert(err.message);
-  }
+    console.log(err);  }
 };
 
 // Sign out
@@ -100,7 +96,6 @@ const logout = async () => {
   } catch (err) {
     // If error console log and alert user
     console.log(err);
-    alert(err.message);
   }
 };
 

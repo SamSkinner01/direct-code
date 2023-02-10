@@ -1,21 +1,29 @@
+#title {
+  font-family: 'Lato', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+}
 .reset {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #DE3C4B;
+  color: #FBF5F3;
   }
   .reset__container {
     display: flex;
     flex-direction: column;
     text-align: center;
-    background-color: #dcdcdc;
     padding: 30px;
+    border-radius: 10px;
   }
   .reset__textBox {
     padding: 10px;
     font-size: 18px;
     margin-bottom: 10px;
+    border-radius: 5px;
   }
   .reset__btn {
     padding: 10px;
@@ -24,7 +32,22 @@
     border: none;
     color: white;
     background-color: black;
+    border-radius: 5px;
+  }
+  .reset__btn:hover {
+    background-color: #c7c0be;
+    color: #FBF5F3;
   }
   .reset div {
     margin-top: 7px;
+  }
+
+  .email_help{
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f4f4f4;
+    color: #333;
+    padding: 10px;
   }

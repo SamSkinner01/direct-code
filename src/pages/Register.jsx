@@ -10,6 +10,8 @@ function Register() {
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
 
+  const [err, setErr] = useState(null);
+
   const navigate = useNavigate();
 
   const register = () => {
@@ -24,7 +26,7 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
-        <h1>Direct</h1>
+        <h1 id="title">Direct</h1>
         <h2>Create an Account</h2>
         <input
           type="email"
@@ -40,17 +42,50 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
-        <button className="register__btn" onClick={register}>
+        <div className="register__error">
+            {err && <p>{err}</p>}
+          </div>
+
+        <button className="register__btn" onClick={() => {
+          if (!email || !password) {
+            setErr("Please enter an email and password");
+            return;
+          }
+          if (!email.includes("@")) {
+            setErr("Please enter a valid email");
+            return;
+          }
+          if (password.length < 6) {
+            setErr("Password must be at least 6 characters");
+            return;
+          }
+          register()
+          .then((user) => {
+            if (!user) {
+              setErr("Invalid email or password");
+            }
+          }
+          )
+        }}>
           Register
         </button>
         <button
           className="register__btn register__google"
-          onClick={signInWithGoogle}
+          onClick={() => {
+            signInWithGoogle()
+              .then((user) => {
+                if (!user) {
+                  setErr("Something went wrong...Try signing up again.");
+                }
+              }
+              )
+              setErr(null);
+          }}
         >
           Register with Google
         </button>
         <div>
-          Already have an account? <Link to="/">Login</Link> now.
+          Already have an account? <Link class="link" to="/">Login</Link> now.
         </div>
       </div>
     </div>
