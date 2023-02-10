@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
-
+import "../css/displayBoard.css";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 
@@ -32,20 +32,27 @@ function Board(props) {
   };
 
   return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Body>
-        <Card.Title>{props.title}</Card.Title>
-        <Card.Text>{props.description}</Card.Text>
-        <Link to={"../board/" + props.boardID} relative="path">
-          <Button variant="primary">See Notes</Button>
-        </Link>
-      </Card.Body>
 
-      <Button variant="danger" onClick={onShow}>
-        Delete
-      </Button>
-
-      <Modal
+      <Card style={{ width: "18rem" }}>
+        <Card.Body>
+            <div class="descriptors">
+              <Card.Title>{props.title}</Card.Title>
+              <Card.Text>{props.description}</Card.Text>
+            </div>
+            <div class="card-header">
+            <div class="card-header__left">
+              <Link to={"../board/" + props.boardID} relative="path">
+                <Button variant="btn btn-primary btn-lg">View</Button>
+              </Link>
+            </div>
+            <div class="card-header__right">
+              <Button variant="btn btn-danger btn-lg" onClick={onShow}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        </Card.Body>
+     <Modal
         show={modalShow}
         onHide={onHide}
         size="lg"
@@ -58,13 +65,13 @@ function Board(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
+          <p class="modal-title">
             Selecting confirm will delete the board. This action cannot be
             undone.
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onHideConfirm}>Confirm</Button>
+          <Button class="modal-title" onClick={onHideConfirm}>Confirm</Button>
         </Modal.Footer>
       </Modal>
     </Card>

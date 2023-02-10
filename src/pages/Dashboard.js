@@ -60,6 +60,17 @@ function Dashboard() {
       return;
     }
 
+    if(title.length > 20){
+      console.log("DSDSDS")
+      alert("Title must be less than 20 characters");
+      return;
+    }
+
+    if(description === ""){
+      alert("Please fill out the description field");
+      return;
+    }
+
     handleClose();
 
     addDoc(collection(db, "boards"), {
@@ -112,21 +123,23 @@ function Dashboard() {
     <>
       <div className="header">
         <div className="header__left">
-          <h1>Direct</h1>
+          <h1 id="title">Direct</h1>
         </div>
         <div className="header__right">
-          <div className="logged-in-as">Logged in as {user?.email}</div>
-          <button data-testid="logout-button" onClick={logout}>Logout</button>
+          <div className="logged-in-as">
+            Logged in as {user?.email.split("@")[0]}
+          </div>
+          <Button data-testid="logout-button" variant="btn btn-light btn-sm" onClick={logout}>Logout</Button>
         </div>
       </div>
 
-      <div classname="dashboard--header">
+      <div className="dashboard--header">
         <div className="dashboard--header__left">
           <h2>Current Boards</h2>
         </div>
         <div className="dashboard--header__right">
-          <Button data-testid="create-board" variant="primary" onClick={handleShow}>
-            Create A Board
+          <Button  data-testid="create-board" variant="btn btn-light btn-lg" onClick={handleShow}>
+            Create Board
           </Button>
         </div>
       </div>
@@ -154,12 +167,12 @@ function Dashboard() {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Create Board</Modal.Title>
+          <Modal.Title id="modal-title">Create Board</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="title">
-              <Form.Label>Title</Form.Label>
+            <Form.Group className="mb-3" controlId="modal_title">
+              <Form.Label class="modal-title">Title</Form.Label>
               <Form.Control
                 required
                 type="text"
@@ -178,8 +191,9 @@ function Dashboard() {
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="description">
-              <Form.Label>Board Description</Form.Label>
+              <Form.Label class="modal-title">Board Description</Form.Label>
               <Form.Control
+                required
                 as="textarea"
                 rows={3}
                 value={description}

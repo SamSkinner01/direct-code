@@ -1,0 +1,25 @@
+
+.descriptors{
+    height: 110px;
+    overflow: hidden;
+}
+
+.card-header{
+    display: flex;
+    background-color: white;
+    border-bottom: 0px;
+    flex-direction:row;
+}
+
+.card-header__left{
+    flex: 2;
+    align-items: left;
+    justify-content: flex-start;
+}
+
+.card-header__right{
+    flex:1;
+    justify-content: flex-end;
+    align-items: right;
+
+}
